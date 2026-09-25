@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIMITLESS — Your identity has no limits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d12;--card:#17171f;--primary:#5b3a8e;--secondary:#8b6bb1;
+  --accent:#d8d8e2;--text:#f1f0f5;--muted:#9997a5;--border:#302a3a;
+  --glow:rgba(139,107,177,.28);--heading:"Cormorant Garamond",serif;--body:"Inter",sans-serif;
+  --danger:#e57373;--success:#81c784;--badge-bg:rgba(139,107,177,0.15);
+}
+body.enid{
+  --bg:#fff7fc;--card:#fff;--primary:#f48fb1;--secondary:#b39ddb;
+  --accent:#81d4fa;--text:#30243a;--muted:#756a7d;--border:#f2d7e4;
+  --glow:rgba(244,143,177,.25);--heading:"Poppins",sans-serif;--body:"Nunito",sans-serif;
+  --danger:#ef5350;--success:#4caf50;--badge-bg:rgba(244,143,177,0.2);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);transition:.45s ease;overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;inset:auto;pointer-events:none;z-index:-1}
+body:before{width:420px;height:420px;top:-160px;right:-120px;background:radial-gradient(circle,var(--glow),transparent 68%);filter:blur(15px)}
+body:after{width:360px;height:360px;bottom:-160px;left:-120px;background:radial-gradient(circle,var(--glow),transparent 68%);filter:blur(20px)}
+.container{width:min(1120px,92%);margin:auto}
+
+/* Navigation & Dock */
+.floating-nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);width:min(1060px,calc(100% - 32px));height:68px;z-index:50;background:color-mix(in srgb,var(--card) 78%,transparent);border:1px solid var(--border);border-radius:22px;box-shadow:0 18px 55px rgba(0,0,0,.18);backdrop-filter:blur(20px)}
+.nav-inner{height:100%;padding:0 22px;display:flex;align-items:center;justify-content:space-between}
+.floating-nav .brand{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:2px}
+.logo{font-size:30px;line-height:1;color:var(--secondary);text-shadow:0 0 18px var(--glow)}
+.floating-nav .links{display:flex;gap:25px}
+.floating-nav .links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:700;transition:.2s}
+.floating-nav .links a:hover{color:var(--text)}
+
+.theme-dock{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;display:flex;gap:12px}
+.theme-dock button{border:1px solid var(--border);background:color-mix(in srgb,var(--card) 88%,transparent);color:var(--text);padding:11px 18px;border-radius:999px;cursor:pointer;font:800 13px var(--body);box-shadow:0 14px 38px rgba(0,0,0,.18),0 0 28px var(--glow);backdrop-filter:blur(18px);transition:.25s}
+.theme-dock button:hover{transform:translateY(-3px);border-color:var(--secondary)}
+
+/* Mascot */
+.mascot-wrap{position:fixed;right:26px;bottom:94px;z-index:55;width:118px;height:135px;pointer-events:none}
+.mascot-bubble{position:absolute;right:82px;top:-8px;white-space:normal;width:185px;padding:9px 12px;border:1px solid var(--border);border-radius:14px 14px 3px 14px;background:var(--card);color:var(--text);font:700 12px/1.35 var(--body);opacity:0;transform:translateY(6px) scale(.96);transition:.25s;box-shadow:0 10px 30px rgba(0,0,0,.18);pointer-events:none}
+.mascot-wrap.show-bubble .mascot-bubble{opacity:1;transform:translateY(0) scale(1)}
+.mascot-art{pointer-events:auto;position:absolute;right:0;bottom:0;width:100px;height:110px;cursor:pointer;filter:drop-shadow(0 15px 18px rgba(0,0,0,.22));transition:transform .18s}
+.ghost-mascot,.cloud-mascot{position:absolute;inset:0}
+.ghost-mascot{width:88px;height:82px;left:6px;top:20px;border-radius:50% 50% 42% 42%;background:linear-gradient(145deg,#191520,#6b4597);box-shadow:inset 0 -10px #17121d}
+.ghost-mascot:after{content:"";position:absolute;left:0;bottom:-16px;width:88px;height:28px;background:linear-gradient(145deg,#191520,#6b4597);clip-path:polygon(0 0,20% 100%,40% 0,60% 100%,80% 0,100% 100%,100% 0)}
+.meye{position:absolute;top:29px;width:13px;height:18px;border-radius:50%;background:#f4efff}.meye:after{content:"";position:absolute;width:5px;height:8px;left:4px;top:5px;border-radius:50%;background:#342044}.meye.l{left:25px}.meye.r{right:25px}
+.mspark{position:absolute;color:#d8c5ff;font-size:17px}.ms1{left:-13px;top:2px}.ms2{right:-12px;top:25px}
+.cloud-mascot{width:86px;height:72px;left:7px;top:30px;border-radius:52% 48% 48% 52%;background:linear-gradient(145deg,#ffd7e8,#c8b8f3);box-shadow:inset 0 -10px rgba(255,255,255,.28)}
+.cloud-mascot:before,.cloud-mascot:after{content:"";position:absolute;border-radius:50%;background:inherit}.cloud-mascot:before{width:55px;height:55px;left:12px;top:-20px}.cloud-mascot:after{width:50px;height:50px;right:8px;top:-14px}
+.cloud-mascot .meye{background:#fff;z-index:2}.cloud-mascot .meye:after{background:#704d77}.cloud-mascot .meye.l{left:24px;top:25px}.cloud-mascot .meye.r{right:24px;top:25px}.blush{position:absolute;z-index:2;width:17px;height:8px;background:#f49cbd;border-radius:50%;top:50px;opacity:.7}.blush.l{left:14px}.blush.r{right:14px}
+.light-mascot{display:none}.enid .ghost-mascot{display:none}.enid .light-mascot{display:block}
+
+/* Hero & Visuals */
+.hero{min-height:650px;display:grid;place-items:center;text-align:center;position:relative;padding-top:80px}
+.hero-inner{max-width:850px}
+.infinity{font-size:145px;line-height:.8;font-weight:500;color:var(--secondary);filter:drop-shadow(0 0 28px var(--glow));animation:float 4s ease-in-out infinite}
+body.enid .infinity{background:linear-gradient(90deg,#f48fb1,#b39ddb,#81d4fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1{font-family:var(--heading);font-size:clamp(58px,9vw,110px);letter-spacing:8px;margin:25px 0 5px}
+.hero h2{font-size:clamp(22px,3.8vw,40px);margin:0 auto 16px;max-width:800px;line-height:1.15}
+.hero p{color:var(--muted);font-size:17px;line-height:1.7;max-width:650px;margin:0 auto 30px}
+.buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:14px 22px;font:700 14px var(--body);cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:var(--primary);color:white;box-shadow:0 12px 30px var(--glow)}
+.secondary-btn{background:transparent;color:var(--text);border:1px solid var(--border)}
+.mic-btn{background:color-mix(in srgb,var(--secondary) 20%,transparent);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:8px 14px;font-size:13px;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.mic-btn:hover{background:var(--secondary);color:white}
+.mic-btn.recording{background:#e53935;color:white;animation:pulseMic 1s infinite}
+
+/* Sections & Cards */
+section{padding:85px 0}
+.section-title{text-align:center;font-family:var(--heading);font-size:46px;margin:0 0 10px}
+.section-sub{text-align:center;color:var(--muted);max-width:680px;margin:0 auto 40px;line-height:1.7}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:color-mix(in srgb,var(--card) 94%,transparent);border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 15px 45px rgba(0,0,0,.08)}
+.step{font-size:12px;letter-spacing:2px;color:var(--secondary);font-weight:800}
+.card h3{margin:13px 0 8px;font-size:21px}.card p{color:var(--muted);line-height:1.65;margin:0}
+
+.form-wrap{max-width:820px;margin:auto}
+.adaptive-card{max-width:780px;margin:28px auto 0;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.12)}
+.field-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.field-block{margin-bottom:26px}
+.field-block h3{margin:0 0 4px 0;font-size:19px}
+.hint,.optional{font-size:13px;color:var(--muted);line-height:1.5}
+.input-row{position:relative;display:flex;gap:10px;margin-top:10px}
+.input-row input,.input-row textarea{flex:1;width:100%;box-sizing:border-box;padding:15px;border:1px solid var(--border);border-radius:14px;background:var(--bg);color:var(--text);font:inherit;outline:none;transition:.2s}
+.adaptive-card textarea{min-height:120px;resize:vertical}
+.input-row input:focus,.input-row textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--glow)}
+
+/* AI Parsing Results Box */
+.ai-result{display:none;margin-top:16px;padding:18px;border:1px solid var(--secondary);border-radius:16px;background:color-mix(in srgb,var(--primary) 8%,transparent);animation:fadeIn 0.3s ease-out}
+.ai-badge{display:inline-block;padding:4px 10px;border-radius:99px;background:var(--badge-bg);color:var(--secondary);font-size:11px;font-weight:800;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;background:color-mix(in srgb,var(--card) 90%,transparent);border:1px solid var(--border);color:var(--muted)}
+
+/* Legacy Comparison View */
+.comparison-box{margin-top:20px;padding:16px;border-radius:16px;border:1px dashed var(--border);background:color-mix(in srgb,var(--bg) 60%,transparent)}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.comp-card{padding:12px 16px;border-radius:12px;font-size:12px;line-height:1.5}
+.comp-legacy{background:rgba(229,115,115,0.08);border:1px solid rgba(229,115,115,0.3);color:var(--danger)}
+.comp-limitless{background:rgba(129,199,132,0.08);border:1px solid rgba(129,199,132,0.3);color:var(--text)}
+
+/* Preview & Choices */
+.preview-box{border:1px solid var(--border);background:var(--card);border-radius:28px;padding:32px}
+.preview-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--secondary);font-weight:800;margin-top:20px}
+.preview-value{font-size:19px;margin-top:4px;font-weight:600}
+.preview-meta{font-size:13px;color:var(--muted);margin-top:2px}
+.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.choice{padding:18px;border:1px solid var(--border);background:var(--card);border-radius:18px;cursor:pointer;transition:.2s}
+.choice:hover,.choice.selected{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 10px 30px var(--glow)}
+.choice strong{display:block;margin-bottom:4px;font-size:15px}.choice span{color:var(--muted);font-size:13px}
+
+/* Footer & Decor */
+.decor{position:absolute;inset:-5%;overflow:hidden;pointer-events:none;z-index:-1}
+.star{position:absolute;color:var(--secondary);opacity:.6;font-size:18px;text-shadow:0 0 12px var(--glow);animation:twinkle 2.8s ease-in-out infinite}
+.star:nth-child(2){animation-delay:.6s}.star:nth-child(3){animation-delay:1.2s}.star:nth-child(4){animation-delay:1.8s}
+.decor:before,.decor:after{content:"✦  ·  ✧   ·   ✦  ·  ⋆   ·  ✧  ·  ✦";position:absolute;inset:0;color:var(--secondary);opacity:.18;font-size:18px;letter-spacing:48px;line-height:100px;transform:rotate(-8deg) scale(1.25);animation:shimmer 9s linear infinite}
+.decor:after{content:"·   ✦   ·   ✧   ·   ✦   ·   ⋆   ·";opacity:.11;font-size:13px;letter-spacing:38px;line-height:130px;transform:rotate(7deg) scale(1.3);animation-duration:12s;animation-direction:reverse}
+body.enid .decor:before{content:"✦  ♡  ✧  ✿  ·  ☁  ✦  ♡  ·  ✧  ✿";color:#f48fb1;opacity:.22}
+body.enid .decor:after{content:"·  ✦  ♡  ·  ☁  ✧  ·  ✿  ✦  ♡";color:#81d4fa;opacity:.16}
+
+footer{padding:40px 0;border-top:1px solid var(--border);color:var(--muted);text-align:center;font-size:13px}
+.success{text-align:center;max-width:650px;margin:auto}
+.success .infinity{font-size:110px}
+
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:.95;transform:scale(1.18)}}
+@keyframes shimmer{0%{transform:translate3d(-2%,0,0) rotate(-8deg) scale(1.25)}50%{transform:translate3d(2%,-2%,0) rotate(-7deg) scale(1.28)}100%{transform:translate3d(-2%,0,0) rotate(-8deg) scale(1.25)}}
+@keyframes pulseMic{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:760px){
+  .floating-nav{top:10px;height:60px;width:calc(100% - 20px);border-radius:18px}
+  .floating-nav .links{display:none}
+  .hero{min-height:550px}.infinity{font-size:105px}h1{font-size:55px;letter-spacing:3px}
+  section{padding:55px 0}.grid3,.choice-grid,.comp-grid{grid-template-columns:1fr}
+  .mascot-wrap{right:10px;bottom:90px;transform:scale(.82);transform-origin:bottom right}
+  .theme-dock{bottom:14px}
+}
+</style>
+</head>
+<body id="top">
+
+<nav class="floating-nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top"><span class="logo">∞</span><span>LIMITLESS</span></a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#profile">Create Profile</a>
+      <a href="#about">Why Limitless</a>
+    </div>
+  </div>
+</nav>
+
+<div class="theme-dock">
+  <button id="themeBtn" title="Switch theme">☀️ Light mode</button>
+  <button id="demoToggleBtn" onclick="toggleComparisonView()">⚡ Toggle Legacy Comparison</button>
+</div>
+
+<!-- Interactive Mascot Widget -->
+<div class="mascot-wrap" id="mascot">
+  <div class="mascot-bubble" id="mascotBubble">psst… try speaking or code-switching ✦</div>
+  <div class="mascot-art" id="mascotArt" role="button" tabindex="0" aria-label="Interactive LIMITLESS mascot">
+    <div class="ghost-mascot"><i class="meye l"></i><i class="meye r"></i><b class="mspark ms1">✦</b><b class="mspark ms2">⋆</b></div>
+    <div class="cloud-mascot light-mascot"><i class="meye l"></i><i class="meye r"></i><i class="blush l"></i><i class="blush r"></i></div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="decor">
+    <span class="star" style="top:20%;left:12%">✦</span>
+    <span class="star" style="top:31%;right:13%">✧</span>
+    <span class="star" style="bottom:17%;left:21%">✦</span>
+    <span class="star" style="bottom:27%;right:24%">✧</span>
+    <span class="star" style="top:15%;left:35%">✦</span>
+    <span class="star" style="top:48%;right:33%;font-size:12px">✧</span>
+    <span class="star" style="bottom:13%;right:10%;font-size:13px">✦</span>
+    <span class="star" style="top:62%;left:7%;font-size:11px">✧</span>
+  </div>
+  <div class="hero-inner">
+    <div class="infinity">∞</div>
+    <h1>LIMITLESS</h1>
+    <h2>Your identity has no limits.<br>Your forms shouldn't either.</h2>
+    <p>Complete web onboarding that respects phonetic spelling, code-switched phrases, mononyms, and unstructured addresses without throwing validation errors.</p>
+    <div class="buttons">
+      <button class="btn primary" onclick="go('profile')">Create your profile →</button>
+      <button class="btn secondary-btn" onclick="go('how')">See how it works</button>
+    </div>
+  </div>
+</header>
+
+<!-- How it Works Grid -->
+<section id="how">
+<div class="container">
+  <h2 class="section-title">Two problems. One human engine.</h2>
+  <p class="section-sub">Standard forms enforce Western database models: mandatory First/Last names and postal codes. Speech and language tools force clean standard scripts. LIMITLESS unifies both with an adaptive input engine.</p>
+  <div class="grid3">
+    <div class="card">
+      <div class="step">01 — EXPRESS</div>
+      <h3>Code-Switch & Speak</h3>
+      <p>Type in Tanglish ("en peru..."), Arabizi ("3ali..."), or use Speech-to-Text to dictate by ear.</p>
+    </div>
+    <div class="card">
+      <div class="step">02 — UNDERSTAND</div>
+      <h3>Phonetic & Structural NLP</h3>
+      <p>Our client-side engine peels back preamble, identifies script mix, and maps non-standard address landmarks.</p>
+    </div>
+    <div class="card">
+      <div class="step">03 — PRESERVE</div>
+      <h3>Human Agency First</h3>
+      <p>No forced standardizations. LIMITLESS stores both your authentic raw input and a canonical representation.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="profile">
+<div class="container form-wrap">
+  <h2 class="section-title">Tell us about you.</h2>
+  <p class="section-sub">No categories to memorize. No "correct" format. Type or speak your name however feels natural.</p>
+  <div class="adaptive-card">
+    <div class="field-block">
+      <div class="field-header">
+        <h3>What should we call you?</h3>
+        <button class="mic-btn" id="micNameBtn" onclick="toggleSpeech('nameNatural', 'micNameBtn')">🎙️ Speak by ear</button>
+      </div>
+      <p class="hint">Examples: <i>"en peru Afrah"</i>, <i>"mera naam Subbu"</i>, <i>"ism3i 7amad"</i>, or a single mononym like <i>"Kalam"</i>.</p>
+      <div class="input-row">
+        <input id="nameNatural" oninput="understandName()" placeholder="Type or speak your name naturally...">
+      </div>
+      
+      <!-- Live Parsing Display -->
+      <div class="ai-result" id="nameResult"></div>
+
+      <!-- Optional Legacy Comparison View -->
+      <div class="comparison-box" id="nameCompBox" style="display:none">
+        <div style="font-weight:700;font-size:12px;letter-spacing:1px;color:var(--muted)">LEGACY VS LIMITLESS COMPARISON</div>
+        <div class="comp-grid">
+          <div class="comp-card comp-legacy" id="nameLegacyText">⚠️ Legacy Form Error: Missing required 'Last Name' field or invalid characters detected.</div>
+          <div class="comp-card comp-limitless" id="nameLimitlessText">✓ LIMITLESS Engine: Successfully parsed mononym / code-switched name.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-block">
+      <h3>Additional name or honorific? <span class="optional">Optional</span></h3>
+      <input id="nameExtra" placeholder="Patronymic, family name, title, or clan name...">
+    </div>
+    <div class="actions" style="display:flex;justify-content:flex-end;margin-top:20px">
+      <button class="btn primary" onclick="nextToAddress()">Continue to Address →</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="address" style="display:none">
+<div class="container form-wrap">
+  <h2 class="section-title">How can we find your place?</h2>
+  <p class="section-sub">Write or dictate your location using landmarks, floor numbers, or cross-streets. No postal code required.</p>
+  <div class="adaptive-card">
+    <div class="field-block">
+      <div class="field-header">
+        <h3>Your natural address</h3>
+        <button class="mic-btn" id="micAddressBtn" onclick="toggleSpeech('addressNatural', 'micAddressBtn')">🎙️ Speak address</button>
+      </div>
+      <p class="hint">Example: <i>"Flat 304, Building 12, behind Sahara Center, Al Nahda"</i> or <i>"House near the banyan tree, Post Office Rd"</i></p>
+      <div class="input-row">
+        <textarea id="addressNatural" oninput="understandAddress()" placeholder="Describe your address in your own words..."></textarea>
+      </div>
+      
+      <div class="ai-result" id="addressResult"></div>
+
+      <div class="comparison-box" id="addressCompBox" style="display:none">
+        <div style="font-weight:700;font-size:12px;letter-spacing:1px;color:var(--muted)">LEGACY VS LIMITLESS COMPARISON</div>
+        <div class="comp-grid">
+          <div class="comp-card comp-legacy" id="addressLegacyText">⚠️ Legacy Form Error: Address rejected. Missing mandatory 6-digit Postal/ZIP Code.</div>
+          <div class="comp-card comp-limitless" id="addressLimitlessText">✓ LIMITLESS Engine: Extracted landmark and structural metadata safely.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" style="display:flex;justify-content:space-between;margin-top:20px">
+      <button class="btn secondary-btn" onclick="go('profile')">← Back</button>
+      <button class="btn primary" onclick="nextToLanguage()">Continue to Communication →</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="language" style="display:none">
+<div class="container form-wrap">
+  <h2 class="section-title">Express yourself naturally.</h2>
+  <p class="section-sub">Mix languages, use Arabizi numbers, or spell by ear. LIMITLESS learns how you speak.</p>
+  <div class="adaptive-card">
+    <div class="field-block">
+      <div class="field-header">
+        <h3>A note about your language preferences</h3>
+        <button class="mic-btn" id="micLangBtn" onclick="toggleSpeech('languageNatural', 'micLangBtn')">🎙️ Dictate message</button>
+      </div>
+      <div class="input-row">
+        <textarea id="languageNatural" oninput="understandLanguage()" placeholder="Type or dictate anything (e.g., 'Shukran habibi, please send docs in Tamil or English')..."></textarea>
+      </div>
+      
+      <div class="ai-result" id="languageResult"></div>
+    </div>
+
+    <div class="actions" style="display:flex;justify-content:space-between;margin-top:20px">
+      <button class="btn secondary-btn" onclick="go('address')">← Back</button>
+      <button class="btn primary" onclick="showPreview()">Review Profile →</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="preview" style="display:none">
+<div class="container preview">
+  <h2 class="section-title">Here's what LIMITLESS understood.</h2>
+  <p class="section-sub">AI suggests an interpretation. You retain complete control over how your data is stored.</p>
+  
+  <div class="preview-box">
+    <div class="preview-label">Parsed Legal / Canonical Name</div>
+    <div class="preview-value" id="previewName">—</div>
+    <div class="preview-meta" id="previewNameMeta">Raw Input: —</div>
+
+    <div class="preview-label">Adaptive Address Payload</div>
+    <div class="preview-value" id="previewAddress">—</div>
+    <div class="preview-meta" id="previewAddressMeta">Structure: —</div>
+
+    <div class="preview-label">Communication & Script Insights</div>
+    <div class="preview-value" id="previewLanguage">—</div>
+    <div class="preview-meta" id="previewLanguageMeta">Detected dialects: —</div>
+  </div>
+
+  <h3 style="text-align:center;margin-top:30px;font-family:var(--heading);font-size:28px">Choose how to save your data</h3>
+  <div class="choice-grid">
+    <div class="choice selected" id="choiceRaw" onclick="selectChoice('raw')">
+      <strong>Keep Raw Original</strong>
+      <span>Store exact input string without any AI alterations.</span>
+    </div>
+    <div class="choice" id="choiceCanonical" onclick="selectChoice('canonical')">
+      <strong>Use Canonical Form</strong>
+      <span>Store cleaned canonical name & mapped structure.</span>
+    </div>
+    <div class="choice" id="choiceDual" onclick="selectChoice('dual')">
+      <strong>Dual Preservation</strong>
+      <span>Store raw input alongside canonical metadata.</span>
+    </div>
+  </div>
+
+  <div class="actions" style="display:flex;justify-content:space-between;margin-top:30px">
+    <button class="btn secondary-btn" onclick="go('language')">← Edit Fields</button>
+    <button class="btn primary" onclick="showSuccess()">Finish & Submit ✓</button>
+  </div>
+</div>
+</section>
+
+<!-- Success Section -->
+<section id="success" style="display:none">
+<div class="container success">
+  <div class="infinity">∞</div>
+  <h2 class="section-title">Your identity is valid.</h2>
+  <p class="section-sub">LIMITLESS understood the person first — instead of forcing you into a standard box.</p>
+  <button class="btn primary" onclick="resetForm()">Start New Session</button>
+</div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+<div class="container" style="max-width:800px;text-align:center">
+  <h2 class="section-title">Why Limitless?</h2>
+  <p class="section-sub">LIMITLESS combines the two hackathon challenge areas into one unified adaptive input layer. The web interface handles flexible identity and address information without postal codes or split names, while our client-side AI engine parses code-switching, transliteration, Arabizi, and phonetic dictation. AI assists; the user remains in control.</p>
+</div>
+</section>
+
+<footer>∞ LIMITLESS · Forms without unnecessary boxes.</footer>
+
+<script>
+// Section Navigation
+const sections = ['profile', 'address', 'language', 'preview', 'success'];
+function go(id) {
+  sections.forEach(x => {
+    const el = document.getElementById(x);
+    if (el) el.style.display = (x === id) ? 'block' : 'none';
+  });
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function val(id) {
+  return document.getElementById(id)?.value.trim() || '';
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Global Parsed State
+let parsedData = {
+  rawName: '',
+  canonicalName: '',
+  nameType: '',
+  detectedLangs: [],
+  rawAddress: '',
+  addressStructure: '',
+  rawLanguage: '',
+  languageSummary: '',
+  storagePreference: 'raw'
+};
+
+let showLegacyComp = false;
+function toggleComparisonView() {
+  showLegacyComp = !showLegacyComp;
+  const nameBox = document.getElementById('nameCompBox');
+  const addrBox = document.getElementById('addressCompBox');
+  if (nameBox) nameBox.style.display = showLegacyComp ? 'block' : 'none';
+  if (addrBox) addrBox.style.display = showLegacyComp ? 'block' : 'none';
+  mascotSay(showLegacyComp ? 'Legacy error view activated! ⚡' : 'Standard adaptive view restored ✦');
+}
+
+// -------------------------------------------------------------
+// INTELLIGENT CLIENT-SIDE NLP ENGINE
+// -------------------------------------------------------------
+
+// Code-Switching & Preamble Patterns
+const INTENT_PATTERNS = [
+  { regex: /^(?:en\s+peru|ente\s+peru)\s+/i, lang: 'Tamil / Malayalam', meaning: 'My name is' },
+  { regex: /^(?:mera\s+naam|mora\s+naam)\s+/i, lang: 'Hindi / Urdu / Hinglish', meaning: 'My name is' },
+  { regex: /^(?:ism3i|ismi|ism-i)\s+/i, lang: 'Arabizi / Arabic', meaning: 'My name is' },
+  { regex: /^(?:me\s+llamo|mi\0\s+nombre\s+es)\s+/i, lang: 'Spanish', meaning: 'My name is' },
+  { regex: /^(?:my\s+name\s+is|my\s+name's|i\s+am|i'm|call\s+me)\s+/i, lang: 'English', meaning: 'My name is' },
+  { regex: /^(?:naan|aami|naa\s+peru)\s+/i, lang: 'South Asian Vernacular', meaning: 'I am' }
+];
+
+function understandName() {
+  const v = val('nameNatural');
+  const box = document.getElementById('nameResult');
+  const legacyText = document.getElementById('nameLegacyText');
+  const limitlessText = document.getElementById('nameLimitlessText');
+
+  if (!v) {
+    box.style.display = 'none';
+    return;
+  }
+
+  let cleaned = v;
+  let detected = [];
+  let nameStructure = 'Standard Input';
+
+  // Check code-switching preamble
+  for (let pattern of INTENT_PATTERNS) {
+    if (pattern.regex.test(v)) {
+      cleaned = v.replace(pattern.regex, '').trim();
+      detected.push(pattern.lang);
+      nameStructure = `Preamble Stripped ('${pattern.meaning}')`;
+      break;
+    }
+  }
+
+  // Detect Arabizi numeric substitutions (3 = Ain, 7 = Ha)
+  if (/[2357789]/.test(cleaned) && /[a-zA-Z]/.test(cleaned)) {
+    detected.push('Arabizi (Latin + Numerals)');
+  }
+
+  // Detect Mononym vs Multi-part
+  const wordCount = cleaned.split(/\s+/).length;
+  if (wordCount === 1) {
+    nameStructure += ' · Mononym / Single Name Legal Format';
+  } else {
+    nameStructure += ` · ${wordCount}-Part Full Name Structure`;
+  }
+
+  parsedData.rawName = v;
+  parsedData.canonicalName = cleaned;
+  parsedData.nameType = nameStructure;
+  parsedData.detectedLangs = detected;
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <span class="ai-badge">✨ LIMITLESS Phonetic Engine</span>
+    <div style="font-size:16px;font-weight:700;">
+      Canonical Name: <span style="color:var(--secondary);">${escapeHtml(cleaned)}</span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px;">
+      <b>Structural Tag:</b> ${escapeHtml(nameStructure)}
+    </div>
+    <div class="tag-cloud">
+      ${detected.map(d => `<span class="tag">🌐 ${escapeHtml(d)}</span>`).join('')}
+      <span class="tag">✓ Mononym Safe</span>
+      <span class="tag">✓ No First/Last split required</span>
+    </div>
+  `;
+
+  if (legacyText && limitlessText) {
+    if (wordCount === 1) {
+      legacyText.innerHTML = `⚠️ <b>Legacy Form Error:</b> Field 'Last Name' is required. Mononym '${escapeHtml(cleaned)}' rejected.`;
+    } else if (detected.length > 0) {
+      legacyText.innerHTML = `⚠️ <b>Legacy Form Error:</b> Code-switching phrase detected. Name stored incorrectly.`;
+    } else {
+      legacyText.innerHTML = `⚠️ <b>Legacy Form Alert:</b> Rigid First/Last splitting will break cultural naming order.`;
+    }
+    limitlessText.innerHTML = `✓ <b>LIMITLESS:</b> Storing '${escapeHtml(cleaned)}' as a complete unified legal identity entity.`;
+  }
+}
+
+function understandAddress() {
+  const v = val('addressNatural');
+  const box = document.getElementById('addressResult');
+  const legacyText = document.getElementById('addressLegacyText');
+  const limitlessText = document.getElementById('addressLimitlessText');
+
+  if (!v) {
+    box.style.display = 'none';
+    return;
+  }
+
+  let features = [];
+  if (/\b(flat|apt|apartment|unit|suite|room)\b/i.test(v)) features.push('Unit/Flat Marker');
+  if (/\b(building|bldg|tower|house|villa|block)\b/i.test(v)) features.push('Building Descriptor');
+  if (/\b(near|behind|opposite|opp|next\s+to|beside|close\s+to)\b/i.test(v)) features.push('Landmark Navigation Cue');
+  if (/\b(street|st|road|rd|avenue|ave|lane|way)\b/i.test(v)) features.push('Thoroughfare');
+
+  const hasPostal = /\b\d{5,6}\b/.test(v);
+  const summary = features.length > 0 ? features.join(' · ') : 'Unstructured Descriptive Address';
+
+  parsedData.rawAddress = v;
+  parsedData.addressStructure = summary;
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <span class="ai-badge">✨ Adaptive Address Parser</span>
+    <div style="font-size:14px;font-weight:600;">
+      Spatial Cues Extracted: <span style="color:var(--text);">${escapeHtml(summary)}</span>
+    </div>
+    <div class="tag-cloud">
+      <span class="tag">${hasPostal ? 'Postal Code Included' : 'No Postal Code Required'}</span>
+      <span class="tag">✓ Landmark Ready</span>
+      <span class="tag">✓ Cross-Border Safe</span>
+    </div>
+  `;
+
+  if (legacyText && limitlessText) {
+    if (!hasPostal) {
+      legacyText.innerHTML = `⚠️ <b>Legacy Form Error:</b> Required field 'ZIP / Postal Code' is missing. Form cannot submit.`;
+    } else {
+      legacyText.innerHTML = `⚠️ <b>Legacy Form Warning:</b> Descriptive landmark cues lost in strict Street/State fields.`;
+    }
+    limitlessText.innerHTML = `✓ <b>LIMITLESS:</b> Address preserved as rich spatial context object. Zero validation blocks.`;
+  }
+}
+
+function understandLanguage() {
+  const v = val('languageNatural');
+  const box = document.getElementById('languageResult');
+
+  if (!v) {
+    box.style.display = 'none';
+    return;
+  }
+
+  let insights = [];
+  if (/[\u0600-\u06FF]/.test(v)) insights.push('Arabic Script');
+  if (/[\u0900-\u097F]/.test(v)) insights.push('Devanagari Script');
+  if (/[\u0B80-\u0BFF]/.test(v)) insights.push('Tamil Script');
+  if (/\b(da|naan|hai|enna|ente|oru|und|iruku|pani|shukran|habibi|bhai)\b/i.test(v)) insights.push('Transliterated Code-Switching');
+  if (/\b[a-zA-Z]+\b/.test(v) && /[^\x00-\x7F]/.test(v)) insights.push('Mixed Multi-Script Input');
+
+  const summary = insights.length > 0 ? insights.join(' + ') : 'Standard Natural Text';
+  parsedData.rawLanguage = v;
+  parsedData.languageSummary = summary;
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <span class="ai-badge">✨ Dialect & Script Engine</span>
+    <div style="font-size:14px;font-weight:600;">
+      Communication Profile: <span style="color:var(--secondary);">${escapeHtml(summary)}</span>
+    </div>
+    <div class="tag-cloud">
+      <span class="tag">✓ Phonetic Spelling Supported</span>
+      <span class="tag">✓ Transliteration Preserved</span>
+    </div>
+  `;
+}
+
+// -------------------------------------------------------------
+// WEB SPEECH API (SPELLING BY EAR)
+// -------------------------------------------------------------
+let activeRecognition = null;
+
+function toggleSpeech(targetId, btnId) {
+  const btn = document.getElementById(btnId);
+  
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    mascotSay("Voice speech isn't supported in this browser tab 🎙️");
+    return;
+  }
+
+  if (activeRecognition) {
+    activeRecognition.stop();
+    activeRecognition = null;
+    btn.classList.remove('recording');
+    btn.textContent = '🎙️ Speak';
+    return;
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  activeRecognition = new SpeechRecognition();
+  activeRecognition.continuous = false;
+  activeRecognition.interimResults = false;
+  activeRecognition.lang = 'en-US'; // Handles multilingual dictation smoothly in chromium
+
+  btn.classList.add('recording');
+  btn.textContent = '🛑 Listening...';
+  mascotSay("Listening closely to your voice... 🎙️");
+
+  activeRecognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    const input = document.getElementById(targetId);
+    if (input) {
+      input.value = input.value ? input.value + ' ' + transcript : transcript;
+      if (targetId === 'nameNatural') understandName();
+      if (targetId === 'addressNatural') understandAddress();
+      if (targetId === 'languageNatural') understandLanguage();
+    }
+    mascotSay("Got it! Processed your voice ✦");
+  };
+
+  activeRecognition.onerror = (err) => {
+    console.warn("Speech recognition error:", err);
+    mascotSay("Could not capture speech. Try typing! ✦");
+    btn.classList.remove('recording');
+    btn.textContent = '🎙️ Speak';
+    activeRecognition = null;
+  };
+
+  activeRecognition.onend = () => {
+    btn.classList.remove('recording');
+    btn.textContent = '🎙️ Speak';
+    activeRecognition = null;
+  };
+
+  activeRecognition.start();
+}
+
+// -------------------------------------------------------------
+// NAVIGATION & PREVIEW LOGIC
+// -------------------------------------------------------------
+function nextToAddress() {
+  if (!val('nameNatural')) {
+    mascotSay('Please enter or speak your name first! ✦');
+    return;
+  }
+  understandName();
+  go('address');
+}
+
+function nextToLanguage() {
+  if (!val('addressNatural')) {
+    mascotSay('Please enter or speak an address description! ✦');
+    return;
+  }
+  understandAddress();
+  go('language');
+}
+
+function showPreview() {
+  if (!val('languageNatural')) {
+    understandLanguage();
+  }
+
+  document.getElementById('previewName').textContent = parsedData.canonicalName || val('nameNatural') || '—';
+  document.getElementById('previewNameMeta').textContent = `Raw Original Input: "${val('nameNatural')}" · (${parsedData.nameType || 'Direct Name'})`;
+
+  document.getElementById('previewAddress').textContent = val('addressNatural') || '—';
+  document.getElementById('previewAddressMeta').textContent = `Structured Cues: ${parsedData.addressStructure || 'Descriptive Location'}`;
+
+  document.getElementById('previewLanguage').textContent = val('languageNatural') || '—';
+  document.getElementById('previewLanguageMeta').textContent = `Insights: ${parsedData.languageSummary || 'Standard Communication'}`;
+
+  go('preview');
+  mascotSay("Review your interpreted profile below ✦");
+}
+
+function selectChoice(type) {
+  parsedData.storagePreference = type;
+  document.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+  if (type === 'raw') document.getElementById('choiceRaw').classList.add('selected');
+  if (type === 'canonical') document.getElementById('choiceCanonical').classList.add('selected');
+  if (type === 'dual') document.getElementById('choiceDual').classList.add('selected');
+
+  const msgs = {
+    raw: 'Storing exact raw string untouched ✨',
+    canonical: 'Using cleaned canonical identity ✨',
+    dual: 'Storing both raw & canonical records ✨'
+  };
+  mascotSay(msgs[type]);
+}
+
+function showSuccess() {
+  go('success');
+  mascotSay(document.body.classList.contains('enid') ? 'YAY! Profile saved perfectly! 🌸' : 'Identity verified & saved. ✦');
+}
+
+function resetForm() {
+  document.getElementById('nameNatural').value = '';
+  document.getElementById('nameExtra').value = '';
+  document.getElementById('addressNatural').value = '';
+  document.getElementById('languageNatural').value = '';
+  document.getElementById('nameResult').style.display = 'none';
+  document.getElementById('addressResult').style.display = 'none';
+  document.getElementById('languageResult').style.display = 'none';
+  go('profile');
+}
+
+// -------------------------------------------------------------
+// THEME & MASCOT INTERACTIONS
+// -------------------------------------------------------------
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.onclick = () => {
+  document.body.classList.toggle('enid');
+  const isEnid = document.body.classList.contains('enid');
+  themeBtn.textContent = isEnid ? '🌙 Dark mode' : '☀️ Light mode';
+  mascotSay(isEnid ? 'Hi!! Bright and playful mode! 🌸' : 'Returned to the deep dark mode. ✦');
+};
+
+const mascot = document.getElementById('mascot');
+const art = document.getElementById('mascotArt');
+const bubble = document.getElementById('mascotBubble');
+
+document.addEventListener('mousemove', e => {
+  if (!art) return;
+  const r = art.getBoundingClientRect();
+  const dx = Math.max(-10, Math.min(10, (e.clientX - (r.left + r.width / 2)) / 35));
+  const dy = Math.max(-8, Math.min(8, (e.clientY - (r.top + r.height / 2)) / 35));
+  art.style.transform = `translate(${dx}px,${dy}px)`;
+});
+
+function mascotSay(t) {
+  bubble.textContent = t;
+  mascot.classList.add('show-bubble');
+  setTimeout(() => mascot.classList.remove('show-bubble'), 3200);
+}
+
+function mascotReact() {
+  mascotSay(document.body.classList.contains('enid') ? 'You clicked me! 🌸' : 'I am watching over your data. ✦');
+  art.animate([
+    { transform: 'scale(1)' },
+    { transform: 'scale(1.15) rotate(6deg)' },
+    { transform: 'scale(1)' }
+  ], { duration: 450 });
+}
+
+art.addEventListener('click', mascotReact);
+art.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    mascotReact();
+  }
+});
+
+setTimeout(() => mascotSay('Try typing "en peru Afrah" or speaking! ✦'), 1200);
+</script>
+</body>
+</html>
